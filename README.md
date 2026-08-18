@@ -41,3 +41,23 @@ ctest --test-dir build --output-on-failure
 ```
 
 Apache-2.0. Wire spec: [pickpoint-proto](https://github.com/pickpoint/pickpoint-proto).
+
+### CI & release
+
+- **PR to `dev`** → `.github/workflows/ci.yml` (CMake + `ctest`)
+- **Merge `dev` → `main`** (untagged HEAD) → bump **patch** in `CMakeLists.txt` and `PICKPOINT_NANO_VERSION`, tag `vX.Y.Z`, GitHub Release  
+  (tag push via `GITHUB_TOKEN` does not start new workflows — the release is created in the same job)
+- **Manual tag `v*`** (pushed by a human) → GitHub Release after build/test
+
+Minor/major: bump both version strings in a PR, merge with `[skip release]` in the commit message, then:
+
+```bash
+git tag v2.1.0
+git push origin v2.1.0
+```
+
+First `2.0.0`: merge the initial commit with `[skip release]`, then `git tag v2.0.0 && git push origin v2.0.0`. A plain push to `main` would auto-bump to `2.0.1`.
+
+## Contributing
+
+Fork and open a PR against **`dev`**. [CONTRIBUTING.md](CONTRIBUTING.md).
